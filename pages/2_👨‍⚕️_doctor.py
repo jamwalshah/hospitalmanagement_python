@@ -29,9 +29,15 @@ with tab2:
         hmm.fetch_doctor(d_id)
     
 with tab3:
-    st.header("An owl")
-    st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
-
-
+    fetch_all_doctors_btn = st.button("Fetch all doctors", key="fmdfetch_all_doctors_btn")
+    if fetch_all_doctors_btn:
+        hmm.fetch_all_doctors()
+    
+    d_id = st.text_input("Enter Doctor's ID to fire🎇 the doctor", placeholder="Doctor's ID", key='fmdd_id')
+    
+    fire_doctor_btn = st.button("Fire the Doctor", key="fmdfire_doctor_btn")
+    if fire_doctor_btn:
+        hmm.fire_doctor(d_id)
+        
 
 st.markdown("""    © Evaluation Nerds Mar-2023""" )

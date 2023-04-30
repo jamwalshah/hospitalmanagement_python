@@ -298,6 +298,64 @@ def fetch_doctor(d_id):
     crsr.close()
     cnx.close()
 
+def fire_doctor(d_id):
+    import streamlit as st
+    import streamlit_authenticator as stauth
+    import mysql.connector
+    import pandas as pd
+    cnx=mysql.connector.connect(host="localhost", database="hospitalDB", user="root", password="mysql")
+    crsr = cnx.cursor()
+
+    try:
+        qry_str='''SELECT d_id FROM doctor_details WHERE d_id = %s'''
+        qry_params=(d_id,)
+        # st.write("DEBUG: Doctor ID", qry_params)    #debug
+        crsr.execute(qry_str, qry_params)
+        db_fetchall=crsr.fetchall()
+        if db_fetchall:
+            qry_str='''DELETE FROM doctor_details WHERE d_id = %s'''
+            qry_params=(d_id,)
+            crsr.execute(qry_str, qry_params)
+            
+            qry_str='''SELECT d_id FROM doctor_details WHERE d_id = %s'''
+            qry_params=(d_id,)
+            crsr.execute(qry_str, qry_params)
+            db_fetchall_select=crsr.fetchall()
+            if not db_fetchall_select:
+                st.success("Doctor with ID "+d_id+" fired successfully")
+        else:
+            st.error("No record found for Doctor ID "+d_id, icon="🚨")
+    except Exception as err:
+        st.exception(err)
+
+    cnx.commit()
+    crsr.close()
+    cnx.close()
+
+def fetch_all_doctors():
+    import streamlit as st
+    import streamlit_authenticator as stauth
+    import mysql.connector
+    import pandas as pd
+    cnx=mysql.connector.connect(host="localhost", database="hospitalDB", user="root", password="mysql")
+    crsr = cnx.cursor()
+
+    qry_str='''SELECT * FROM doctor_details'''
+    try:
+        crsr.execute(qry_str)
+        db_fetchall=crsr.fetchall()
+        if db_fetchall:
+            df=pd.DataFrame(columns=['d_id', 'd_name', 'd_spec', 'd_age', 'd_addrs', 'd_contact', 'd_fees', 'd_msalary'], data=db_fetchall)
+            st.table(df)
+        else:
+            st.error("Doctors' database is empty", icon="🚨")
+    except Exception as err:
+        st.exception(err)
+
+    cnx.commit()
+    crsr.close()
+    cnx.close()
+
 def insert_nurse(n_name, n_age, n_addr, n_contact, n_msalary):
     import streamlit as st
     import streamlit_authenticator as stauth
@@ -351,6 +409,64 @@ def fetch_nurse(n_id):
     crsr.close()
     cnx.close()
 
+def fire_nurse(n_id):
+    import streamlit as st
+    import streamlit_authenticator as stauth
+    import mysql.connector
+    import pandas as pd
+    cnx=mysql.connector.connect(host="localhost", database="hospitalDB", user="root", password="mysql")
+    crsr = cnx.cursor()
+
+    try:
+        qry_str='''SELECT n_id FROM nurse_details WHERE n_id = %s'''
+        qry_params=(n_id,)
+        # st.write("DEBUG: Nurse ID", qry_params)    #debug
+        crsr.execute(qry_str, qry_params)
+        db_fetchall=crsr.fetchall()
+        if db_fetchall:
+            qry_str='''DELETE FROM nurse_details WHERE n_id = %s'''
+            qry_params=(n_id,)
+            crsr.execute(qry_str, qry_params)
+            
+            qry_str='''SELECT n_id FROM nurse_details WHERE n_id = %s'''
+            qry_params=(n_id,)
+            crsr.execute(qry_str, qry_params)
+            db_fetchall_select=crsr.fetchall()
+            if not db_fetchall_select:
+                st.success("Nurse with ID "+n_id+" fired successfully")
+        else:
+            st.error("No record found for Nurse ID "+n_id, icon="🚨")
+    except Exception as err:
+        st.exception(err)
+
+    cnx.commit()
+    crsr.close()
+    cnx.close()
+
+def fetch_all_nurses():
+    import streamlit as st
+    import streamlit_authenticator as stauth
+    import mysql.connector
+    import pandas as pd
+    cnx=mysql.connector.connect(host="localhost", database="hospitalDB", user="root", password="mysql")
+    crsr = cnx.cursor()
+
+    qry_str='''SELECT * FROM nurse_details'''
+    try:
+        crsr.execute(qry_str)
+        db_fetchall=crsr.fetchall()
+        if db_fetchall:
+            df=pd.DataFrame(columns=['n_id', 'n_name', 'n_age', 'n_address', 'n_contact', 'n_msalary'], data=db_fetchall)
+            st.table(df)
+        else:
+            st.error("Nurses' database is empty", icon="🚨")
+    except Exception as err:
+        st.exception(err)
+
+    cnx.commit()
+    crsr.close()
+    cnx.close()
+
 def insert_patient(p_name, p_gender, p_age, p_addr, p_contact, p_d_id, p_n_id):
     import streamlit as st
     import streamlit_authenticator as stauth
@@ -397,6 +513,63 @@ def fetch_patient(p_id):
             st.table(df)
         else:
             st.error("No record found for Patient ID "+p_id, icon="🚨")
+    except Exception as err:
+        st.exception(err)
+
+    cnx.commit()
+    crsr.close()
+    cnx.close()
+def discharge_patient(p_id):
+    import streamlit as st
+    import streamlit_authenticator as stauth
+    import mysql.connector
+    import pandas as pd
+    cnx=mysql.connector.connect(host="localhost", database="hospitalDB", user="root", password="mysql")
+    crsr = cnx.cursor()
+
+    try:
+        qry_str='''SELECT p_id FROM patient_details WHERE p_id = %s'''
+        qry_params=(p_id,)
+        # st.write("DEBUG: Patient ID", qry_params)    #debug
+        crsr.execute(qry_str, qry_params)
+        db_fetchall=crsr.fetchall()
+        if db_fetchall:
+            qry_str='''DELETE FROM patient_details WHERE p_id = %s'''
+            qry_params=(p_id,)
+            crsr.execute(qry_str, qry_params)
+            
+            qry_str='''SELECT p_id FROM patient_details WHERE p_id = %s'''
+            qry_params=(p_id,)
+            crsr.execute(qry_str, qry_params)
+            db_fetchall_select=crsr.fetchall()
+            if not db_fetchall_select:
+                st.success("Patient with ID "+p_id+" discharged successfully")
+        else:
+            st.error("No record found for Patient ID "+p_id, icon="🚨")
+    except Exception as err:
+        st.exception(err)
+
+    cnx.commit()
+    crsr.close()
+    cnx.close()
+
+def fetch_all_patients():
+    import streamlit as st
+    import streamlit_authenticator as stauth
+    import mysql.connector
+    import pandas as pd
+    cnx=mysql.connector.connect(host="localhost", database="hospitalDB", user="root", password="mysql")
+    crsr = cnx.cursor()
+
+    qry_str='''SELECT * FROM patient_details'''
+    try:
+        crsr.execute(qry_str)
+        db_fetchall=crsr.fetchall()
+        if db_fetchall:
+            df=pd.DataFrame(columns=['p_id', 'p_name', 'p_gender', 'p_age', 'p_addrs', 'p_contact', 'd_id', 'n_id'], data=db_fetchall)
+            st.table(df)
+        else:
+            st.error("patient' database is empty", icon="🚨")
     except Exception as err:
         st.exception(err)
 

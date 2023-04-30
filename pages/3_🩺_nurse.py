@@ -27,11 +27,15 @@ with tab2:
         hmm.fetch_nurse(n_id)
     
 with tab3:
-    st.header("An owl")
-    st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
-
-
-
-
+    fetch_all_nurses_btn = st.button("Fetch all nurses", key="fmdfetch_all_nurses_btn")
+    if fetch_all_nurses_btn:
+        hmm.fetch_all_nurses()
+    
+    n_id = st.text_input("Enter Nurse's ID to fire🎇 the nurse", placeholder="Nurse's ID", key='fmdn_id')
+    
+    fire_nurse_btn = st.button("Fire the Nurse", key="fmdfire_nurse_btn")
+    if fire_nurse_btn:
+        hmm.fire_nurse(n_id)
+    
 
 st.markdown("""    © Evaluation Nerds Mar-2023""" )

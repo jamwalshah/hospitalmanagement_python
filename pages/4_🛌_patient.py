@@ -30,13 +30,16 @@ with tab2:
     if fetch_patient_btn:
         hmm.fetch_patient(p_id)
     
-    st.header("A dog")
-    st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
-
 with tab3:
-    st.header("An owl")
-    st.image("https://static.streamlit.io/examples/owl.jpg", width=200)
-
-
+    fetch_all_patients_btn = st.button("Fetch all patients", key="fmdfetch_all_patients_btn")
+    if fetch_all_patients_btn:
+        hmm.fetch_all_patients()
+    
+    p_id = st.text_input("Enter Patient's ID to discharge the patient", placeholder="Patient's ID", key='fmdp_id')
+    
+    discharge_patient_btn = st.button("Discharge the Patient", key="fmddischarge_patient_btn")
+    if discharge_patient_btn:
+        hmm.discharge_patient(p_id)
+    
 
 st.markdown("""    © Evaluation Nerds Mar-2023""" )
