@@ -33,78 +33,44 @@ if "login_valid" not in st.session_state:
 if "app_valid" not in st.session_state:
    st.session_state["app_valid"] = True
 
+
 def closeapp():
     st.session_state["app_valid"] = False
 
-while(st.session_state['app_valid']):
-    st.write('login_valid:', st.session_state['login_valid'], '    app_valid:', st.session_state['app_valid'])   #debug
+#while(st.session_state['app_valid']):
+st.write('login_valid:', st.session_state['login_valid'], '\tapp_valid:', st.session_state['app_valid'])   #debug
+    
+## check DB connectivity
+# hmm.check_db_connectivity() #un-comment to enable checking db connectivity
 
-    # st.write("cnx_mysql", type(cnx))  #debug
-    # st.write("crsr", type(crsr))      #debug
+## selct DB
+#hmm.show_db()               #un-comment to enable printing db
 
-    ## check DB connectivity
-    hmm.check_db_connectivity() #un-comment to enable checking db connectivity
+## create tables
+hmm.create_table()
 
-    ## selct DB
-    hmm.show_db()               #un-comment to enable printing db
+## initialize users
+#hmm.initialize_users()     #un-comment to enable creating users
 
-    ## create tables
-    hmm.create_table()
+## show created tables
+#hmm.show_users()           #un-comment to enable printing users
 
-    ## initialize users
-    #hmm.initialize_users()     #un-comment to enable creating users
+## show created tables
+#hmm.show_tables()          #un-comment to enable printing tables
+    
+# login authentication logic
+login_col1, login_col2 = st.columns(2)
+with login_col1:
+    formuser=st.text_input('Enter Username', placeholder="username", key='fmuser')
+with login_col2:
+    formpass=st.text_input('Enter Password', placeholder="password", key='frmpass', type='password')
 
-    ## show created tables
-    #hmm.show_users()           #un-comment to enable printing users
-
-    ## show created tables
-    #hmm.show_tables()          #un-comment to enable printing tables
-
-
-    # login authentication logic
-    st.text_input('Enter username', placeholder="username", key='formuser')
-    st.text_input('Enter password', placeholder="password", key='formpass', type='password')
-    submitted=st.button('Submit')
-    if submitted:
-        st.write(st.session_state)
-        hmm.login_action()
-        # tempunm=(st.session_state.formpass)
-        # crsr.execute('''SELECT pword FROM user_data WHERE unm=%s''', tempunm)
-        # db_fetchone=crsr.fetchone()
-        # if st.session_state.formuser == db_fetchone[0]:
-        #     st.success(body='user authenticated', icon='🤖')
-        #     st.session_state['login_valid']=True
-        # else:
-        #     st.error("INCORRECT Credentials !!", icon='💥')
-        
-        #  dummy user authentication
-        #if st.session_state.formuser=='admin' and st.session_state.formpass=='admin':
-        #    #st.success(body='"formuser:", st.session_state.formuser, "formpass:", st.session_state.formpass', icon='🤖')
-        #    
-        #    st.success(body='', icon='🤖')
-        #else:
-        #    st.error("INCORRECT Credentials !!", icon='💥')
-
-    st.write(st.session_state.app_valid)
-    col1, col2, col3, col4 = st.columns(4)
-    with col1:
-        pass
-    with col2:
-        pass
-    with col3:
-        if st.session_state.login_valid:
-            st.button("logout", on_click=closeapp())
-    with col4:
-        st.button("Close App", on_click=closeapp())
+login_btn=st.button('Login', help="Click here to login", on_click=hmm.login_action(formuser, formpass))
+    
+if login_btn:
+    st.write(st.session_state)
 
     
-    if st.session_state.app_valid:
-        continue
-
-        
-'''
-move all connnections & cursors to methods, don't keep in index
-'''
 
 # conx=st.experimental_connection('hospitalDB','sql', ttl=300)
 # st.write(conx)
