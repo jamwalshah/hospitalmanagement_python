@@ -18,18 +18,14 @@ with tab1:
     
     insert_nurse_btn = st.button("Insert Nurse record")
     if insert_nurse_btn:
-        #st.write(type(d_name)) # str
-        #st.write(type(d_spec[0])) # list[str]
-        #st.write(type(d_age))  # int
-        #st.write(d_name) # str
-        #st.write(d_spec[0]) # list
-        #st.write(d_age)  # int
         hmm.insert_nurse(n_name, n_age, n_addr, n_contact, n_msalary)
 
 with tab2:
-    st.header("A dog")
-    st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
-
+    n_id = st.text_input("Enter Nurse's ID to fetch details", placeholder="Nurse's ID", key='fmn_id')
+    fetch_nurse_btn = st.button("Fetch Nurse records", key="fmfetch_nurse_btn")
+    if fetch_nurse_btn:
+        hmm.fetch_nurse(n_id)
+    
 with tab3:
     st.header("An owl")
     st.image("https://static.streamlit.io/examples/owl.jpg", width=200)

@@ -22,16 +22,14 @@ with tab1:
 
     insert_patient_btn = st.button("Insert Patient record")
     if insert_patient_btn:
-        #st.write(type(d_name)) # str
-        #st.write(type(d_spec[0])) # list[str]
-        #st.write(type(d_age))  # int
-        #st.write(d_name) # str
-        #st.write(d_spec[0]) # list
-        #st.write(d_age)  # int
-        st.write(p_gender[0])
         hmm.insert_patient(p_name, p_gender[0], p_age, p_addr, p_contact, p_d_id, p_n_id)
 
 with tab2:
+    p_id = st.text_input("Enter Patient's ID to fetch details", placeholder="Patient's ID", key='fmp_id')
+    fetch_patient_btn = st.button("Fetch Patient records", key="fmfetch_patient_btn")
+    if fetch_patient_btn:
+        hmm.fetch_patient(p_id)
+    
     st.header("A dog")
     st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
 

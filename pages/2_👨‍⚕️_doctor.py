@@ -18,21 +18,16 @@ with tab1:
     d_fees = st.number_input("Enter Doctor's Fees", step=500, min_value=1000, key='fmd_fees')
     d_msalary = st.number_input("Enter Doctor's Monthly Salary", step=500, min_value=45000, key='fmd_msalary')
 
-    insert_doctor_btn = st.button("Insert Doctor record")    
+    insert_doctor_btn = st.button("Insert Doctor record", key="fminsert_doctor_btn")
     if insert_doctor_btn:
-        #st.write(type(d_name)) # str
-        #st.write(type(d_spec[0])) # list[str]
-        #st.write(type(d_age))  # int
-        #st.write(d_name) # str
-        #st.write(d_spec[0]) # list
-        #st.write(d_age)  # int
         hmm.insert_doctor(d_name, d_spec[0], d_age, d_addr, d_contact, d_fees, d_msalary)
 
 with tab2:
-    st.text_input("Enter Doctor's ID", placeholder="Doctor's Name", key='d_name')
-    st.header("A dog")
-    st.image("https://static.streamlit.io/examples/dog.jpg", width=200)
-
+    d_id = st.text_input("Enter Doctor's ID to fetch details", placeholder="Doctor's ID", key='fmd_id')
+    fetch_doctor_btn = st.button("Fetch Doctor records", key="fmfetch_doctor_btn")
+    if fetch_doctor_btn:
+        hmm.fetch_doctor(d_id)
+    
 with tab3:
     st.header("An owl")
     st.image("https://static.streamlit.io/examples/owl.jpg", width=200)

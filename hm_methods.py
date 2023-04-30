@@ -268,6 +268,36 @@ def insert_doctor(d_name, d_spec, d_age, d_addr, d_contact, d_fees, d_msalary):
     crsr.close()
     cnx.close()
 
+def fetch_doctor(d_id):
+    import streamlit as st
+    import streamlit_authenticator as stauth
+    import mysql.connector
+    import pandas as pd
+    cnx=mysql.connector.connect(host="localhost", database="hospitalDB", user="root", password="mysql")
+    crsr = cnx.cursor()
+
+    qry_str='''SELECT * FROM doctor_details WHERE d_id = %s'''
+    qry_params=(d_id,)
+    # st.write("DEBUG: Doctor ID", qry_params)    #debug
+    try:
+        crsr.execute(qry_str, qry_params)
+        db_fetchall=crsr.fetchall()
+        # st.write("DEBUG: fetchall", db_fetchall)   #debug
+        if db_fetchall:
+            # for row in db_fetchall:                       #debug
+                # st.write("DEBUG: row in fetchall", row)   #debug
+                # st.write("DEBUG: type of row in fetchall: ", type(db_fetchall))   #debug
+            df=pd.DataFrame(columns=['d_id', 'd_name', 'd_spec', 'd_age', 'd_addrs', 'd_contact', 'd_fees', 'd_msalary'], data=db_fetchall)
+            st.table(df)
+        else:
+            st.error("No record found for Doctor ID "+d_id, icon="🚨")
+    except Exception as err:
+        st.exception(err)
+
+    cnx.commit()
+    crsr.close()
+    cnx.close()
+
 def insert_nurse(n_name, n_age, n_addr, n_contact, n_msalary):
     import streamlit as st
     import streamlit_authenticator as stauth
@@ -291,6 +321,35 @@ def insert_nurse(n_name, n_age, n_addr, n_contact, n_msalary):
     crsr.close()
     cnx.close()
 
+def fetch_nurse(n_id):
+    import streamlit as st
+    import streamlit_authenticator as stauth
+    import mysql.connector
+    import pandas as pd
+    cnx=mysql.connector.connect(host="localhost", database="hospitalDB", user="root", password="mysql")
+    crsr = cnx.cursor()
+
+    qry_str='''SELECT * FROM nurse_details WHERE n_id = %s'''
+    qry_params=(n_id,)
+    # st.write("DEBUG: Nurse ID", qry_params)    #debug
+    try:
+        crsr.execute(qry_str, qry_params)
+        db_fetchall=crsr.fetchall()
+        # st.write("DEBUG: fetchall", db_fetchall)   #debug
+        if db_fetchall:
+            # for row in db_fetchall:                       #debug
+                # st.write("DEBUG: row in fetchall", row)   #debug
+                # st.write("DEBUG: type of row in fetchall: ", type(db_fetchall))   #debug
+            df=pd.DataFrame(columns=['n_id', 'n_name', 'n_age', 'n_address', 'n_contact', 'n_msalary'], data=db_fetchall)
+            st.table(df)
+        else:
+            st.error("No record found for Nurse ID "+n_id, icon="🚨")
+    except Exception as err:
+        st.exception(err)
+
+    cnx.commit()
+    crsr.close()
+    cnx.close()
 
 def insert_patient(p_name, p_gender, p_age, p_addr, p_contact, p_d_id, p_n_id):
     import streamlit as st
@@ -311,6 +370,36 @@ def insert_patient(p_name, p_gender, p_age, p_addr, p_contact, p_d_id, p_n_id):
     else:
         st.error("Error while inserting patient record", icon="🚨")
     
+    cnx.commit()
+    crsr.close()
+    cnx.close()
+
+def fetch_patient(p_id):
+    import streamlit as st
+    import streamlit_authenticator as stauth
+    import mysql.connector
+    import pandas as pd
+    cnx=mysql.connector.connect(host="localhost", database="hospitalDB", user="root", password="mysql")
+    crsr = cnx.cursor()
+
+    qry_str='''SELECT * FROM patient_details WHERE p_id = %s'''
+    qry_params=(p_id,)
+    # st.write("DEBUG: Patient ID", qry_params)    #debug
+    try:
+        crsr.execute(qry_str, qry_params)
+        db_fetchall=crsr.fetchall()
+        # st.write("DEBUG: fetchall", db_fetchall)   #debug
+        if db_fetchall:
+            # for row in db_fetchall:                       #debug
+                # st.write("DEBUG: row in fetchall", row)   #debug
+                # st.write("DEBUG: type of row in fetchall: ", type(db_fetchall))   #debug
+            df=pd.DataFrame(columns=['p_id', 'p_name', 'p_gender', 'p_age', 'p_addrs', 'p_contact', 'd_id', 'n_id'], data=db_fetchall)
+            st.table(df)
+        else:
+            st.error("No record found for Patient ID "+p_id, icon="🚨")
+    except Exception as err:
+        st.exception(err)
+
     cnx.commit()
     crsr.close()
     cnx.close()
