@@ -44,19 +44,22 @@ st.write('login_valid:', st.session_state['login_valid'], '\tapp_valid:', st.ses
 # hmm.check_db_connectivity() #un-comment to enable checking db connectivity
 
 ## selct DB
-#hmm.show_db()               #un-comment to enable printing db
+# hmm.show_db()               #un-comment to enable printing db
 
 ## create tables
 hmm.create_table()
 
 ## initialize users
-#hmm.initialize_users()     #un-comment to enable creating users
+# hmm.initialize_users()     #un-comment to enable creating users
 
 ## show created tables
-#hmm.show_users()           #un-comment to enable printing users
+# hmm.show_users()           #un-comment to enable printing users
+
+## initialize doctors
+# hmm.insert_default_doctors_nurses()   #un-comment to enable inserting default doctors & nurses
 
 ## show created tables
-#hmm.show_tables()          #un-comment to enable printing tables
+# hmm.show_tables()          #un-comment to enable printing tables
     
 # login authentication logic
 login_col1, login_col2 = st.columns(2)

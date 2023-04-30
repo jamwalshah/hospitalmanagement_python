@@ -28,6 +28,7 @@ with tab1:
         #st.write(d_name) # str
         #st.write(d_spec[0]) # list
         #st.write(d_age)  # int
+        st.write(p_gender[0])
         hmm.insert_patient(p_name, p_gender[0], p_age, p_addr, p_contact, p_d_id, p_n_id)
 
 with tab2:

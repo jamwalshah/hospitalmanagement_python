@@ -74,11 +74,12 @@ def create_table():
         d_id INT AUTO_INCREMENT,
         d_name VARCHAR(30) NOT NULL,
         d_spec VARCHAR(50) DEFAULT "General",
-        d_age INT, d_addrs VARCHAR(70),
+        d_age INT,
         d_addrs VARCHAR(70),
         d_contact VARCHAR(15),
         d_fees DECIMAL(6,0) DEFAULT "1000",
-        d_msalary DECIMAL(6, 0) DEFAULT "45000"
+        d_msalary DECIMAL(6, 0) DEFAULT "45000",
+        PRIMARY KEY (d_id)
         )'''
     create_tableq['nurse_details']='''CREATE TABLE IF NOT EXISTS nurse_details(
         n_id INT AUTO_INCREMENT,
@@ -86,7 +87,8 @@ def create_table():
         n_age INT,
         n_address VARCHAR(30),
         n_contact VARCHAR(15),
-        n_msalary INT DEFAULT '25000'
+        n_msalary INT DEFAULT '25000',
+        PRIMARY KEY (n_id)
         )'''
     create_tableq['patient_details']='''CREATE TABLE IF NOT EXISTS patient_details(
         p_id INT AUTO_INCREMENT,
@@ -106,25 +108,48 @@ def create_table():
     crsr.execute(create_tableq['doctor_details'])
     crsr.execute(create_tableq['nurse_details'])
     crsr.execute(create_tableq['patient_details'])
+    
+    #cnx.commit()
+    crsr.close()
+    cnx.close()
 
+def insert_default_doctors_nurses():
+    import streamlit as st
+    import streamlit_authenticator as stauth
+    import mysql.connector
+    cnx=mysql.connector.connect(host="localhost", database="hospitalDB", user="root", password="mysql")
+    crsr = cnx.cursor()
+    
     ## insert three doctors to initialize
     qry_str='''INSERT INTO doctor_details(d_name, d_spec, d_age, d_addrs, d_contact, d_fees, d_msalary) VALUES
     (%s, %s, %s, %s, %s, %s, %s)'''
-    
+    #
     qry_params=('doc1_name', 'ENT', 26, 'Mumbai', '7897897890', 2000, 51000)
     st.write('Doctor Inserted:', qry_params)    #debug
     crsr.execute(qry_str, qry_params)
-    
-    qry_params=('doc1_name', 'Cardiology', 27, 'Delhi', '4564564560', 2500, 52000)
+    #
+    qry_params=('doc2_name', 'Cardiology', 27, 'Delhi', '4564564560', 2500, 52000)
     st.write('Doctor Inserted:', qry_params)    #debug
     crsr.execute(qry_str, qry_params)
-    
-    qry_params=('doc1_name', 'Neurology', 28, 'Pune', '1231231230', 3000, 53000)
+    #
+    qry_params=('doc3_name', 'Neurology', 28, 'Pune', '1231231230', 3000, 53000)
     st.write('Doctor Inserted:', qry_params)    #debug
     crsr.execute(qry_str, qry_params)
-    
     ## insert three nurses to initialize
-
+    qry_str='''INSERT INTO nurse_details(n_name, n_age, n_address, n_contact, n_msalary) VALUES
+    (%s, %s, %s, %s, %s)'''
+    #
+    qry_params=('nur1_name', 22, 'Mumbai', '9879879870', 26000)
+    st.write("Nurse Inserted:", qry_params)    #debug
+    crsr.execute(qry_str, qry_params)
+    #
+    qry_params=('nur2_name', 23, 'Delhi', '6546546540', 27000)
+    st.write("Nurse Inserted:", qry_params)    #debug
+    crsr.execute(qry_str, qry_params)
+    #
+    qry_params=('nur3_name', 23, 'Pune', '3213213210', 28000)
+    st.write("Nurse Inserted:", qry_params)    #debug
+    crsr.execute(qry_str, qry_params)
 
     cnx.commit()
     crsr.close()
@@ -282,9 +307,9 @@ def insert_patient(p_name, p_gender, p_age, p_addr, p_contact, p_d_id, p_n_id):
     crsr.execute(qry_str, qry_params)
     db_fetchone=crsr.fetchone()
     if db_fetchone == None:
-        st.success("Doctor record inserted successfully", icon="🔥")
+        st.success("Patint record inserted successfully", icon="🔥")
     else:
-        st.error("Error while inserting doctor record", icon="🚨")
+        st.error("Error while inserting patient record", icon="🚨")
     
     cnx.commit()
     crsr.close()
