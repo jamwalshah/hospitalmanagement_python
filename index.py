@@ -65,13 +65,16 @@ hmm.create_table()
 login_col1, login_col2 = st.columns(2)
 with login_col1:
     formuser=st.text_input('Enter Username', placeholder="username", key='fmuser')
+    
 with login_col2:
-    formpass=st.text_input('Enter Password', placeholder="password", key='frmpass', type='password')
+    formpass=st.text_input('Enter Password', placeholder="password", key='fmpass', type='password')
 
-login_btn=st.button('Login', help="Click here to login", on_click=hmm.login_action(formuser, formpass))
+login_btn=st.button('Login', help="Click here to login")
     
 if login_btn:
-    st.write(st.session_state)
+    # st.write(st.session_state)  #debug
+    # st.write("DEBUG", formuser, formpass)  #debug
+    hmm.login_action(formuser, formpass)
 
     
 
