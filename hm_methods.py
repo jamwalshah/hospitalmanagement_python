@@ -169,7 +169,7 @@ def initialize_users():
     crsr.execute('''INSERT INTO user_data(unm,pword) VALUES(%s, %s)''', ('vaibhav','vaibhav123'))
     crsr.execute('''INSERT INTO user_data(unm,pword) VALUES(%s, %s)''', ('tejaswini','tejaswini123'))
     crsr.execute('''INSERT INTO user_data(unm,pword) VALUES(%s, %s)''', ('usha','usha123'))
-    crsr.execute('''INSERT INTO user_data(unm,pword) VALUES(%s, %s)''', ('ushashree','ushashree'))
+    crsr.execute('''INSERT INTO user_data(unm,pword) VALUES(%s, %s)''', ('ushashree','ushashree123'))
     
     cnx.commit()
     crsr.close()
@@ -364,7 +364,7 @@ def insert_nurse(n_name, n_age, n_addr, n_contact, n_msalary):
     import streamlit_authenticator as stauth
     import mysql.connector
     cnx=mysql.connector.connect(host="localhost", database="hospitalDB", user="root", password="mysql")
-    crsr = cnx.cursor()\
+    crsr = cnx.cursor()
     
     #st.write(n_name, n_age, n_addr, n_contact, n_msalary)   #debug
     qry_str='''INSERT INTO nurse_details(n_name, n_age, n_address, n_contact, n_msalary) VALUES
