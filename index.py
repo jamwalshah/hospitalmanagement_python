@@ -23,22 +23,11 @@ st.write('Login page')
 ## connection & cursor closing snippet, to be used at end of each callback
 # crsr.close()
 # cnx.close()
-# st.success("Index: Connection Closed Successfully")
+# st.success("Index: Connection Closed Successfully") #debug
 
 
 #if "shared" not in st.session_state:
 #   st.session_state["shared"] = True
-if "login_valid" not in st.session_state:
-   st.session_state["login_valid"] = False
-if "app_valid" not in st.session_state:
-   st.session_state["app_valid"] = True
-
-
-def closeapp():
-    st.session_state["app_valid"] = False
-
-#while(st.session_state['app_valid']):
-st.write('login_valid:', st.session_state['login_valid'], '\tapp_valid:', st.session_state['app_valid'])   #debug
     
 ## check DB connectivity
 # hmm.check_db_connectivity() #un-comment to enable checking db connectivity
@@ -113,16 +102,5 @@ if login_btn:
 #from yaml.loader import SafeLoaderwith open('config.yaml') as file:
 #    config = yaml.load(file, Loader=SafeLoader)
 
-#authenticator = stauth.Authenticate(
-#    config['credentials'],
-#    config['cookie']['name'],
-#    config['cookie']['key'],
-#    config['cookie']['expiry_days'],
-#    config['preauthorized']
-#)
-# get authenticator status
-#name, authentication_status, username = authenticator.login('Login', 'main')
-# 
-#hashed_passwords = stauth.Hasher([]).generate()
 
 st.markdown("""    © Evaluation Nerds Mar-2023""" )
