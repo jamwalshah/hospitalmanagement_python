@@ -221,10 +221,10 @@ def login_action(formuser, formpass):
     
     qry_str="SELECT pword FROM user_data WHERE unm = %s"
     qry_params=(formuser,)
-    st.write("DEBUG: login_action: qry_params", qry_params)    #debug
+    # st.write("DEBUG: login_action: qry_params", qry_params)    #debug
     crsr.execute(qry_str, qry_params)
     db_fetchone=crsr.fetchone()
-    st.write("DEBUG: pword fetched", db_fetchone)   #debug, keep it commented, it'll printpassword for entered user
+    # st.write("DEBUG: pword fetched", db_fetchone)   #debug, keep it commented, it'll printpassword for entered user
     if db_fetchone:
         if formpass == db_fetchone[0]:
             st.success(body='Logn_action(): user authenticated', icon='🤖')
