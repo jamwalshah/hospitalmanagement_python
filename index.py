@@ -6,9 +6,7 @@ import streamlit_authenticator as stauth
 import mysql.connector
 import hm_methods as hmm
 import sqlalchemy
-import pymysql
 import yaml
-import time
 
 st.set_page_config(page_title="Login page", page_icon=":hospital:", layout="wide")
 st.title(':hospital: Hospital Management App')
