@@ -1,21 +1,40 @@
 import streamlit as st
-st.set_page_config(page_title="Welcome page", page_icon=":house:")
+import hm_methods as hmm
+from streamlit_extras.switch_page_button import switch_page
+
+st.set_page_config(page_title="Welcome page", page_icon=":house:", layout="wide")
+hmm.session_check()
+hmm.logout_band()
 st.title(':house: Welcome to Hospital Management App')
 st.write('Hospital Management App')
 
 #st.write(st.session_state)     #debug
+# st.write("DEBUG: reg_name : ", st.session_state.reg_name) #debug
+# st.write("DEBUG: urole    : ", st.session_state.urole)    #debug
 
 
 
-col1, col2, col3, col4 = st.columns(4)
-with col1:
-    st.success("success message")
-with col2:
-    st.error("Error message")
-with col3:
-    st.warning("Warning message")
-with col4:
-    st.info("info message")
+# st.write("DEBUG: ", st.session_state['urole'])  #debug
+if st.session_state['urole'] == 'admin':
+    coldoctor, colnurse, colpatient = st.columns(3)
+    with coldoctor:
+        # st.write("DEBUG: Doctor Widget")        #debug
+        gotodoctorbtn = st.button("Doctor Widget")
+        if gotodoctorbtn:
+            switch_page('doctor')
+
+    with colnurse:
+        # st.write("DEBUG: Nurse Widget")     #debug
+        gotonursebtn = st.button("Nurse Widget")
+        if gotonursebtn:
+            switch_page('nurse')
     
+    with colpatient:
+        # st.write("DEBUG: Patient Widget")   #debug
+        gotopatientbtn = st.button("Patient Widget")
+        if gotopatientbtn:
+            switch_page('patient')
 
-st.markdown("""    © Evaluation Nerds Mar-2023""" )
+
+
+st.write("""© Evaluation Nerds Mar-2023""" )

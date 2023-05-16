@@ -1,5 +1,3 @@
-init_ttl_value=600
-
 # creating database connectivity
 def check_db_connectivity():
     import streamlit as st
@@ -68,6 +66,8 @@ def create_table():
     create_tableq['user_data']='''CREATE TABLE IF NOT EXISTS user_data(
         unm VARCHAR(30),
         pword VARCHAR(30) DEFAULT '000',
+        reg_name VARCHAR(40),
+        urole VARCHAR(15),
         PRIMARY KEY(unm)
         )'''
     create_tableq['doctor_details']='''CREATE TABLE IF NOT EXISTS doctor_details(
@@ -163,13 +163,13 @@ def initialize_users():
     crsr = cnx.cursor()
     
     ## users initialization / insertor
-    crsr.execute('''INSERT INTO user_data(unm,pword) VALUES(%s, %s)''', ('admin','admin123'))
-    crsr.execute('''INSERT INTO user_data(unm,pword) VALUES(%s, %s)''', ('surya','surya123'))
-    crsr.execute('''INSERT INTO user_data(unm,pword) VALUES(%s, %s)''', ('swapnil','swapnil123'))
-    crsr.execute('''INSERT INTO user_data(unm,pword) VALUES(%s, %s)''', ('vaibhav','vaibhav123'))
-    crsr.execute('''INSERT INTO user_data(unm,pword) VALUES(%s, %s)''', ('tejaswini','tejaswini123'))
-    crsr.execute('''INSERT INTO user_data(unm,pword) VALUES(%s, %s)''', ('usha','usha123'))
-    crsr.execute('''INSERT INTO user_data(unm,pword) VALUES(%s, %s)''', ('ushashree','ushashree123'))
+    crsr.execute('''INSERT INTO user_data(unm,pword,reg_name,urole) VALUES(%s, %s, %s, %s)''', ('admin','admin123','Nerd Admin','admin'))
+    crsr.execute('''INSERT INTO user_data(unm,pword,reg_name,urole) VALUES(%s, %s, %s, %s)''', ('manager','manager123','Nerd Manager','manager'))
+    crsr.execute('''INSERT INTO user_data(unm,pword,reg_name,urole) VALUES(%s, %s, %s, %s)''', ('tpa','tpa123', 'Nerd TPA', 'tpa'))
+    crsr.execute('''INSERT INTO user_data(unm,pword,reg_name,urole) VALUES(%s, %s, %s, %s)''', ('receptionist','receptionist123','Nerd Receptionist','receptionist'))
+    crsr.execute('''INSERT INTO user_data(unm,pword,reg_name,urole) VALUES(%s, %s, %s, %s)''', ('doctor','doctor123','Dr. Nerd', 'doctor'))
+    # crsr.execute('''INSERT INTO user_data(unm,pword) VALUES(%s, %s)''', ('usha','usha123'))
+    # crsr.execute('''INSERT INTO user_data(unm,pword) VALUES(%s, %s)''', ('ushashree','ushashree123'))
     
     cnx.commit()
     crsr.close()
@@ -183,7 +183,7 @@ def show_users():
     crsr = cnx.cursor()
     
     ## user_data table fetch
-    crsr.execute("SELECT unm, pword FROM user_data")    #debug
+    crsr.execute("SELECT unm, pword, reg_name, urole FROM user_data")    #debug
     db_fetchall=crsr.fetchall()                         #debug
     for row in db_fetchall:                             #debug
         st.write("user created:", row[0])               #debug
@@ -208,36 +208,86 @@ def show_tables():
     crsr.close()
     cnx.close()
 
-def reset_ttl():
-    ttl_value=300
-    return ttl_value
-
+# to login user,creates session upon successful user authentication
 def login_action(formuser, formpass):
     import streamlit as st
     import streamlit_authenticator as stauth
     import mysql.connector
+    from streamlit_extras.switch_page_button import switch_page
     cnx=mysql.connector.connect(host="localhost", database="hospitalDB", user="root", password="mysql")
     crsr = cnx.cursor()
     
-    qry_str="SELECT pword FROM user_data WHERE unm = %s"
-    qry_params=(formuser,)
-    # st.write("DEBUG: login_action: qry_params", qry_params)    #debug
+    qry_str="SELECT * FROM user_data WHERE unm = %s AND pword = %s"
+    qry_params=(formuser, formpass)
     crsr.execute(qry_str, qry_params)
-    db_fetchone=crsr.fetchone()
-    # st.write("DEBUG: pword fetched", db_fetchone)   #debug, keep it commented, it'll printpassword for entered user
-    if db_fetchone:
-        if formpass == db_fetchone[0]:
-            st.success(body='Logn_action(): user authenticated', icon='🤖')
-            st.session_state['login_valid']=True
-        else:
-            st.error("INCORRECT Credentials !!", icon='💥')
+    # st.write("DEBUG: login_action: qry_params", qry_params)    #debug
+    db_fetchall=crsr.fetchall()
+    # st.write("DEBUG: * fetched", db_fetchall)   #debug, keep it commented, it'll printpassword for entered user
+    if db_fetchall:
+        # st.write(db_fetchall) #debug
+        st.write(db_fetchall[0])
+        st.session_state['reg_name']=db_fetchall[0][2]
+        st.session_state['urole']=db_fetchall[0][3]
+        switch_page('home')
     else:
-        st.warning("Invalid User", icon="🚨")
+        st.error("INCORRECT Credentials !!", icon='🚨')
+
+    # qry_str="SELECT pword FROM user_data WHERE unm = %s"
+    # qry_params=(formuser,)
+    # # st.write("DEBUG: login_action: qry_params", qry_params)    #debug
+    # crsr.execute(qry_str, qry_params)
+    # db_fetchone=crsr.fetchone()
+    # # st.write("DEBUG: pword fetched", db_fetchone)   #debug, keep it commented, it'll printpassword for entered user
+    # if db_fetchone:
+    #     if formpass == db_fetchone[0]:
+    #         st.success(body='Logn_action(): user authenticated', icon='🤖')
+    #         st.session_state['logout']=False
+    #         if st.session_state['logout'] is True:
+    #             st.sess
+    #         # if st.session_state['reg_name'] not in st.session_state:
+
+    #     else:
+    #         st.error("INCORRECT Credentials !!", icon='💥')
+    # else:
+    #     st.warning("Invalid User", icon="🚨")
 
     cnx.commit()
     crsr.close()
     cnx.close()
 
+# checks if session exists, otherwise redirects to index page
+def session_check():
+    import streamlit as st
+    from streamlit_extras.switch_page_button import switch_page
+    if 'reg_name' not in st.session_state and 'urole' not in st.session_state:
+        switch_page('index')
+
+# displays logged in user and logout button will clear session upon click
+def logout_band():
+    import streamlit as st
+    from streamlit_extras.switch_page_button import switch_page
+    
+    colusr, colf1, colf2, collogout = st.columns(4)
+    
+    with colusr:
+        st.write("Logged User :   ", st.session_state.reg_name , "(", st.session_state.urole, ")" )
+        # st.write("DEBUG: session_state      : ", st.session_state)  #debug
+
+    with colf1:
+        pass
+
+    with colf2:
+        pass
+
+    with collogout:
+        logout_btn = st.button("Logout")
+        if logout_btn:
+            # switch_page('index')      #debug
+            # st.write("DEBUG: st.session_state.reg_user is ", st.session_state.reg_name) #debug
+            # st.write("DEBUG: st.session_state.urole is ", st.session_state.urole)       #debug
+            del st.session_state.reg_name
+            del st.session_state.urole
+            switch_page('index')
 
 # close_db_connection method
 def close_db_connection(cnx1, cursor1):
@@ -259,7 +309,7 @@ def insert_doctor(d_name, d_spec, d_age, d_addr, d_contact, d_fees, d_msalary):
     qry_str='''INSERT INTO doctor_details(d_name, d_spec, d_age, d_addrs, d_contact, d_fees, d_msalary) VALUES
     (%s, %s, %s, %s, %s, %s, %s)'''
     qry_params=(d_name, d_spec, d_age, d_addr, d_contact, d_fees, d_msalary)
-    st.write(qry_params)    #debug
+    # st.write(qry_params)    #debug
     crsr.execute(qry_str, qry_params)
     db_fetchone=crsr.fetchone()
     if db_fetchone == None:
@@ -370,7 +420,7 @@ def insert_nurse(n_name, n_age, n_addr, n_contact, n_msalary):
     qry_str='''INSERT INTO nurse_details(n_name, n_age, n_address, n_contact, n_msalary) VALUES
     (%s, %s, %s, %s, %s)'''
     qry_params=(n_name, n_age, n_addr, n_contact, n_msalary)
-    st.write(qry_params)    #debug
+    # st.write(qry_params)    #debug
     crsr.execute(qry_str, qry_params)
     db_fetchone=crsr.fetchone()
     if db_fetchone == None:
@@ -481,7 +531,7 @@ def insert_patient(p_name, p_gender, p_age, p_addr, p_contact, p_d_id, p_n_id):
     qry_str='''INSERT INTO patient_details(p_name, p_gender, p_age, p_addrs, p_contact, d_id, n_id) VALUES
     (%s, %s, %s, %s, %s, %s, %s)'''
     qry_params=(p_name, p_gender, p_age, p_addr, p_contact, p_d_id, p_n_id)
-    st.write(qry_params)    #debug
+    # st.write(qry_params)    #debug
     crsr.execute(qry_str, qry_params)
     db_fetchone=crsr.fetchone()
     if db_fetchone == None:
@@ -579,3 +629,18 @@ def fetch_all_patients():
     cnx.commit()
     crsr.close()
     cnx.close()
+
+def print_footer():
+    import streamlit as st
+    st.write("""© Evaluation Nerds Mar-2023""" )
+    cola, colb, colc = st.columns(3)
+    with cola:
+        st.write('''Surya Dev Singh Jamwal [Back End]''')
+        st.write('''Swapnil Abane          [Back End]''')
+        st.write('''Tejaswini Dhote        [Database]''')
+    with colb:
+        st.write('''Vaibhav Khandekar  [Front End]''')
+        st.write('''Ushashree Shripati [Front End]''')
+        st.write('''Usha Amle          [Database]''')
+    with colc:
+        pass

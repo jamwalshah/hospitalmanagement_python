@@ -1,12 +1,12 @@
 # installing mysql-connector-python module using pip
-# pip install mysql-connector-python streamlit streamlit-authenticator SQLAlchemy Cython PyMySQL mysqlclient yaml
+# pip install mysql-connector-python streamlit streamlit-extras streamlit-aggrid streamlit-authenticator SQLAlchemy Cython PyMySQL mysqlclient
 
 import streamlit as st
 import streamlit_authenticator as stauth
 import mysql.connector
 import hm_methods as hmm
 import sqlalchemy
-import yaml
+from streamlit_extras.switch_page_button import switch_page
 
 st.set_page_config(page_title="Login page", page_icon=":hospital:", layout="wide")
 st.title(':hospital: Hospital Management App')
@@ -57,13 +57,17 @@ with login_col2:
     formpass=st.text_input('Enter Password', placeholder="password", key='fmpass', type='password')
 
 login_btn=st.button('Login', help="Click here to login")
-    
+# landing_btn=st.button('goto landing') #debug
+
 if login_btn:
     # st.write(st.session_state)  #debug
     # st.write("DEBUG", formuser, formpass)  #debug
     hmm.login_action(formuser, formpass)
+    # st.write("DEBUG: st.session_state['reg_name'] : ", st.session_state['reg_name'])    #debug
+    # st.write("DEBUG: st.session_state['urole']    : ", st.session_state['urole'])       #debug
 
-    
+# if landing_btn:           # debug
+#     switch_page('home')   # debug
 
 # conx=st.experimental_connection('hospitalDB','sql', ttl=300)
 # st.write(conx)
@@ -101,4 +105,4 @@ if login_btn:
 #    config = yaml.load(file, Loader=SafeLoader)
 
 
-st.markdown("""    © Evaluation Nerds Mar-2023""" )
+hmm.print_footer()

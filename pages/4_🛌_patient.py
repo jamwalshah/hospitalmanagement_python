@@ -1,9 +1,12 @@
 import streamlit as st
 import hm_methods as hmm
-st.set_page_config(page_title="Patient Manager", page_icon="🛌")
+from streamlit_extras.switch_page_button import switch_page
+
+st.set_page_config(page_title="Patient Manager", page_icon="🛌", layout="wide")
+hmm.session_check()
+hmm.logout_band()
 st.title('🛌 Patient Manager')
 st.write('Patient Management Widget')
-
 #st.write(st.session_state)     #debug
 
 
@@ -42,4 +45,4 @@ with tab3:
         hmm.discharge_patient(p_id)
     
 
-st.markdown("""    © Evaluation Nerds Mar-2023""" )
+st.write("""© Evaluation Nerds Mar-2023""" )
