@@ -15,25 +15,25 @@ st.write('Hospital Management App')
 
 
 # st.write("DEBUG: ", st.session_state['urole'])  #debug
-if st.session_state['urole'] == 'admin':
-    coldoctor, colnurse, colpatient = st.columns(3)
-    with coldoctor:
-        # st.write("DEBUG: Doctor Widget")        #debug
-        gotodoctorbtn = st.button("Doctor Widget")
-        if gotodoctorbtn:
-            switch_page('doctor')
+# if st.session_state['urole'] == 'admin':
+coldoctor, colnurse, colpatient = st.columns(3)
+with coldoctor:
+    # st.write("DEBUG: Doctor Widget")        #debug
+    gotodoctorbtn = st.button("Doctor Widget")
+    if gotodoctorbtn:
+        switch_page('doctor')
 
-    with colnurse:
-        # st.write("DEBUG: Nurse Widget")     #debug
-        gotonursebtn = st.button("Nurse Widget")
-        if gotonursebtn:
-            switch_page('nurse')
-    
-    with colpatient:
-        # st.write("DEBUG: Patient Widget")   #debug
-        gotopatientbtn = st.button("Patient Widget")
-        if gotopatientbtn:
-            switch_page('patient')
+with colnurse:
+    # st.write("DEBUG: Nurse Widget")     #debug
+    gotonursebtn = st.button("Nurse Widget")
+    if gotonursebtn:
+        switch_page('nurse')
+
+with colpatient:
+    # st.write("DEBUG: Patient Widget")   #debug
+    gotopatientbtn = st.button("Patient Widget")
+    if gotopatientbtn:
+        switch_page('patient')
 
 
 

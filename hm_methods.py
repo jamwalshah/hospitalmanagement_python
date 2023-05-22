@@ -270,7 +270,7 @@ def logout_band():
     colusr, colf1, colf2, collogout = st.columns(4)
     
     with colusr:
-        st.write("Logged User :   ", st.session_state.reg_name , "(", st.session_state.urole, ")" )
+        st.write("Logged User 👨‍💻    \n", st.session_state.reg_name , "(", st.session_state.urole, ")" )
         # st.write("DEBUG: session_state      : ", st.session_state)  #debug
 
     with colf1:
