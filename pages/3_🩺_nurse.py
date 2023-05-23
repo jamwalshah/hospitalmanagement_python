@@ -36,9 +36,12 @@ with tab2:
         st.error("You're not allowed to check Nurse details", icon= "🚨")
     
 with tab3:
-    fetch_all_nurses_btn = st.button("Fetch all nurses", key="fmdfetch_all_nurses_btn")
-    if fetch_all_nurses_btn:
-        hmm.fetch_all_nurses()
+    if st.session_state.urole == 'admin' or st.session_state.urole == 'manager' or st.session_state.urole == 'receptionist':
+        fetch_all_nurses_btn = st.button("Fetch all nurses", key="fmdfetch_all_nurses_btn")
+        if fetch_all_nurses_btn:
+            hmm.fetch_all_nurses()
+    else:
+        st.warning("You're not allowed to check Nurse details", icon= "🤖")
     if st.session_state.urole == 'admin':
         n_id = st.text_input("Enter Nurse's ID to fire🎇 the nurse", placeholder="Nurse's ID", key='fmdn_id')
         fire_nurse_btn = st.button("Fire the Nurse", key="fmdfire_nurse_btn")

@@ -40,9 +40,12 @@ with tab2:
         st.error("You're not allowed to fetch patient details", icon= "🚨")
     
 with tab3:
-    fetch_all_patients_btn = st.button("Fetch all patients", key="fmdfetch_all_patients_btn")
-    if fetch_all_patients_btn:
-        hmm.fetch_all_patients()
+    if st.session_state.urole == 'admin' or st.session_state.urole == 'doctor' or st.session_state.urole == 'receptionist' or st.session_state.urole == 'tpa':
+        fetch_all_patients_btn = st.button("Fetch all patients", key="fmdfetch_all_patients_btn")
+        if fetch_all_patients_btn:
+            hmm.fetch_all_patients()
+    else:
+        st.warning("You're not allowed to fetch patient details", icon= "🤖")
     if st.session_state.urole == 'admin' or st.session_state.urole == 'receptionist':
         p_id = st.text_input("Enter Patient's ID to discharge the patient", placeholder="Patient's ID", key='fmdp_id')
         discharge_patient_btn = st.button("Discharge the Patient", key="fmddischarge_patient_btn")

@@ -38,9 +38,12 @@ with tab2:
         st.error("You're not allowed to check Doctor details", icon= "🚨")
     
 with tab3:
-    fetch_all_doctors_btn = st.button("Fetch all doctors", key="fmdfetch_all_doctors_btn")
-    if fetch_all_doctors_btn:
-        hmm.fetch_all_doctors()
+    if st.session_state.urole == 'admin' or st.session_state.urole == 'manager' or st.session_state.urole == 'receptionist':
+        fetch_all_doctors_btn = st.button("Fetch all doctors", key="fmdfetch_all_doctors_btn")
+        if fetch_all_doctors_btn:
+            hmm.fetch_all_doctors()
+    else:
+        st.warning("You're not allowed to check Doctor details", icon= "🤖")    
     if st.session_state.urole == 'admin':
         d_id = st.text_input("Enter Doctor's ID to fire🎇 the doctor", placeholder="Doctor's ID", key='fmdd_id')
         fire_doctor_btn = st.button("Fire the Doctor", key="fmdfire_doctor_btn")
